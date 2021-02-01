@@ -13,3 +13,6 @@ const returnFloatRandom = (min, max, simbolsAfterComma = 2) => {
   let rand = min + Math.random() * (max - min);
   return +rand.toFixed(simbolsAfterComma);
 }
+
+returnIntegerRandom(1, 3);
+returnFloatRandom(1, 3, 3);
