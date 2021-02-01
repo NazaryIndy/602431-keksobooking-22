@@ -2,7 +2,6 @@ const returnIntegerRandom = (min, max) => {
   if (min > max || min < 0 || max <= 0) {
     return;
   }
-
   return Math.floor(min + Math.random() * (max + 1 - min));
 }
 
