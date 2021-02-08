@@ -71,15 +71,15 @@ const getRandomArrayElement = (elements) => {
 const getRandomArray = (array) => {
   let numberOfElements = returnIntegerRandom(1, array.length - 1);
   let result = new Array(numberOfElements);
-  let len = array.length;
-  const taken = new Array(len);
-  if (numberOfElements > len) {
+
+  const taken = new Array(array.length);
+  if (numberOfElements > array.length) {
     return;
   }
   while (numberOfElements--) {
-    let x = Math.floor(Math.random() * len);
+    let x = Math.floor(Math.random() * array.length);
     result[numberOfElements] = array[x in taken ? taken[x] : x];
-    taken[x] = --len in taken ? taken[len] : len;
+    taken[x] = --array.length in taken ? taken[array.length] : array.length;
   }
 
   return result;
