@@ -124,3 +124,4 @@ const createAd = () => {
 };
 
 const offersAvailable = new Array(ADS_COUNT).fill(null).map(() => createAd());
+offersAvailable;
