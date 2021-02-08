@@ -1,21 +1,3 @@
-const returnIntegerRandom = (min, max) => {
-  if (min > max || min < 0 || max <= 0) {
-    return;
-  }
-  return Math.floor(min + Math.random() * (max + 1 - min));
-}
-
-const returnFloatRandom = (min, max, simbolsAfterComma = 2) => {
-  if (min > max || min < 0 || max <= 0) {
-    return;
-  }
-  let rand = min + Math.random() * (max - min);
-  return +rand.toFixed(simbolsAfterComma);
-}
-
-returnIntegerRandom(1, 3);
-returnFloatRandom(1, 3, 3);
-
 const MIN_X = 35.65000;
 const MAX_X = 35.70000;
 const MIN_Y = 139.70000;
@@ -64,25 +46,37 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
+const returnIntegerRandom = (min, max) => {
+  if (min > max || min < 0 || max <= 0) {
+    return;
+  }
+  return Math.floor(min + Math.random() * (max + 1 - min));
+}
+
+const returnFloatRandom = (min, max, simbolsAfterComma = 2) => {
+  if (min > max || min < 0 || max <= 0) {
+    return;
+  }
+  let rand = min + Math.random() * (max - min);
+  return +rand.toFixed(simbolsAfterComma);
+}
+
 const getRandomArrayElement = (elements) => {
   return elements[returnIntegerRandom(0, elements.length - 1)];
 };
 
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 const getRandomArray = (array) => {
-  let numberOfElements = returnIntegerRandom(1, array.length - 1);
-  let result = new Array(numberOfElements);
-
-  const taken = new Array(array.length);
-  if (numberOfElements > array.length) {
-    return;
-  }
-  while (numberOfElements--) {
-    let x = Math.floor(Math.random() * array.length);
-    result[numberOfElements] = array[x in taken ? taken[x] : x];
-    taken[x] = --array.length in taken ? taken[array.length] : array.length;
-  }
-
-  return result;
+  const shuffledArray = shuffleArray(array);
+  const size = returnIntegerRandom(1, array.length);
+  return shuffledArray.slice(0, size);
 }
 
 const createAuthor = () => {
