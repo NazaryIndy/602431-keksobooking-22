@@ -12,7 +12,6 @@ const MIN_USER = 1;
 const MAX_USER = 8;
 const MIN_GUESTS = 1;
 const MAX_GUESTS = 20;
-const ADS_COUNT = 8;
 
 const TYPES = [
   'palace',
@@ -86,5 +85,8 @@ const createAd = () => {
   }
 };
 
-const offersAvailable = new Array(ADS_COUNT).fill(null).map(() => createAd());
-offersAvailable;
+const generateAds = (quantity) => {
+  return new Array(quantity).fill(null).map(() => createAd());
+}
+
+export { generateAds };
