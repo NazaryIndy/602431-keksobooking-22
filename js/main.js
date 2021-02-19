@@ -1,6 +1,7 @@
-import { generateAds } from './data.js';
+import { renderOffers } from './offer.js';
 
-const ADS_QUANTITY = 8;
+const mapCanvas = document.querySelector('.map__canvas');
 
-const adsAvailable = generateAds(ADS_QUANTITY);
-adsAvailable;
+const offersTemplate = renderOffers();
+
+mapCanvas.appendChild(offersTemplate.children[0]);
