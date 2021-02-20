@@ -2,6 +2,6 @@ import { renderOffers } from './offer.js';
 
 const mapCanvas = document.querySelector('.map__canvas');
 
-const offersTemplate = renderOffers();
+const offerCardElements = renderOffers();
 
-mapCanvas.appendChild(offersTemplate.children[0]);
+mapCanvas.appendChild(offerCardElements.children[0]);
