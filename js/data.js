@@ -5,13 +5,14 @@ const MAX_X = 35.70000;
 const MIN_Y = 139.70000;
 const MAX_Y = 139.80000;
 const MIN_PRICE = 1;
-const MAX_PRICE = 100;
+const MAX_PRICE = 50000;
 const MIN_ROOMS = 1;
 const MAX_ROOMS = 10;
 const MIN_USER = 1;
 const MAX_USER = 8;
 const MIN_GUESTS = 1;
 const MAX_GUESTS = 20;
+const ADS_QUANTITY = 8;
 
 const TYPES = [
   'palace',
@@ -85,8 +86,8 @@ const createAd = () => {
   }
 };
 
-const generateAds = (quantity) => {
-  return new Array(quantity).fill(null).map(() => createAd());
+const generateOffers = () => {
+  return new Array(ADS_QUANTITY).fill(null).map(() => createAd());
 }
 
-export { generateAds };
+export { generateOffers };
