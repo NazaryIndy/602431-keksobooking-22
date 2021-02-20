@@ -1,6 +1,6 @@
 const form = document.querySelector('.ad-form');
 
-const prices = {
+const MIN_PRICES = {
   bungalow: 0,
   flat: 1000,
   house: 5000,
@@ -13,7 +13,7 @@ const timeInElement = form.querySelector('#timein');
 const timeOutElement = form.querySelector('#timeout');
 
 typeOfHousingElement.addEventListener('change', (evt) => {
-  priceElement.placeholder = priceElement.min = prices[evt.target.value];
+  priceElement.placeholder = priceElement.min = MIN_PRICES[evt.target.value];
 });
 
 timeInElement.addEventListener('change', (evt) => {
