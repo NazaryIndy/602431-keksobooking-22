@@ -1,3 +1,4 @@
+import './ad-form.js';
 import { renderOffers } from './offer.js';
 
 const mapCanvas = document.querySelector('.map__canvas');
