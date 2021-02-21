@@ -2,8 +2,15 @@ import { disableForm, enableForm } from './forms-controller.js';
 import { generateOffers } from './data.js';
 import { renderOffers } from './offer.js';
 
-const TOKYO_LAT = 35.652832;
-const TOKYO_LNG = 139.839478;
+const tokioCoordinates = {
+  lat: 35.652832,
+  lng: 139.839478,
+};
+const MAIN_PIN_WIDTH = 52;
+const MAIN_PIN_HEIGHT = 52;
+const PIN_WIDTH = 40;
+const PIN_HEIGHT = 40;
+
 const L = window.L;
 const adForm = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
@@ -22,18 +29,22 @@ const disableApp = () => {
   disableForm(mapFiltersForm, 'map__filters');
 };
 
+const setAddresValue = ({lat, lng}) => {
+  addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+}
+
 addressField.readOnly = true;
 
 disableApp();
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    addressField.value = `${TOKYO_LAT.toFixed(5)}, ${TOKYO_LNG.toFixed(5)}`;
+    setAddresValue(tokioCoordinates);
     enableApp();
   })
   .setView({
-    lat: TOKYO_LAT,
-    lng: TOKYO_LNG,
+    lat: tokioCoordinates.lat,
+    lng: tokioCoordinates.lng,
   }, 10);
 
 L.tileLayer(
@@ -45,14 +56,14 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconSize: [MAIN_PIN_WIDTH , MAIN_PIN_HEIGHT],
+  iconAnchor: [MAIN_PIN_WIDTH / 2, MAIN_PIN_HEIGHT],
 });
 
 const marker = L.marker(
   {
-    lat: 35.652832,
-    lng: 139.839478,
+    lat: tokioCoordinates.lat,
+    lng: tokioCoordinates.lng,
   },
   {
     draggable: true,
@@ -61,14 +72,14 @@ const marker = L.marker(
 ).addTo(map);
 
 marker.on('moveend', (evt) => {
-  addressField.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+  setAddresValue(evt.target.getLatLng());
 });
 
 offers.forEach(({location}, index) => {
   const icon = L.icon({
     iconUrl: '../img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+    iconSize: [PIN_WIDTH, PIN_HEIGHT],
+    iconAnchor: [PIN_WIDTH / 2, PIN_HEIGHT],
   });
 
   const marker = L.marker(
