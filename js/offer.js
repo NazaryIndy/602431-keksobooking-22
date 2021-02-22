@@ -1,5 +1,3 @@
-import { generateOffers } from './data.js';
-
 const types = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
@@ -10,9 +8,8 @@ const types = {
 const offerCardTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
-const offers = generateOffers();
 
-const renderOffers = () => {
+const renderOffers = (offers) => {
   const offersFragment = document.createDocumentFragment();
 
   offers.forEach(({ offer, author }) => {
