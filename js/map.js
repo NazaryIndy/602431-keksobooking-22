@@ -2,7 +2,7 @@ import { disableForm, enableForm } from './forms-controller.js';
 import { generateOffers } from './data.js';
 import { renderOffers } from './offer.js';
 
-const tokioCoordinates = {
+const TOKIO_COORDINATES = {
   lat: 35.652832,
   lng: 139.839478,
 };
@@ -39,13 +39,10 @@ disableApp();
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    setAddresValue(tokioCoordinates);
+    setAddresValue(TOKIO_COORDINATES);
     enableApp();
   })
-  .setView({
-    lat: tokioCoordinates.lat,
-    lng: tokioCoordinates.lng,
-  }, 10);
+  .setView(TOKIO_COORDINATES, 10);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -61,10 +58,7 @@ const mainPinIcon = L.icon({
 });
 
 const marker = L.marker(
-  {
-    lat: tokioCoordinates.lat,
-    lng: tokioCoordinates.lng,
-  },
+  TOKIO_COORDINATES,
   {
     draggable: true,
     icon: mainPinIcon,
