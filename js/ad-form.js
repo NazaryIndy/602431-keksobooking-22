@@ -18,6 +18,20 @@ const roomNumberInput = form.querySelector('#room_number');
 const capacityInput = form.querySelector('#capacity');
 const options = capacityInput.querySelectorAll('option');
 
+const capacityToRoom = {
+  1: { validValues: [1], message: '1 комната для 1 гостя' },
+  2: { validValues: [1, 2], message: 'Можно выбрать 1 или 2 гостя' },
+  3: { validValues:[1, 2, 3], message: 'Можно выбрать 1, 2 или 3 гостя' },
+  100: { validValues: [100], message: '100 комнат не для гостей' },
+};
+
+const roomToCapacity = {
+  1: { validValues: [1, 2, 3], message: '1 комната для 1 гостя' },
+  2: { validValues: [2, 3], message: 'Для 2-х гостей нужно выбрать 2 или 3 комнаты' },
+  3: { validValues:[3], message: 'Для 3-х гостей нужно выбрать 3 комнаты' },
+  0: { validValues: [100], message: 'Не для гостей можно выбрать 100 комнат' },
+};
+
 priceInput.addEventListener('change', () => {
   const valueLength = priceInput.value
 
@@ -57,14 +71,10 @@ timeOutInput.addEventListener('change', (evt) => {
 });
 
 capacityInput.addEventListener('change', (evt) => {
-  if (evt.target.value === '1' && (roomNumberInput.value !== '1' && roomNumberInput.value !== '2' && roomNumberInput.value !== '3')) {
-    capacityInput.setCustomValidity('1 комната для 1 гостя');
-  } else if (evt.target.value === '2' && (roomNumberInput.value !== '2' && roomNumberInput.value !== '3')) {
-    capacityInput.setCustomValidity('Для 2-х гостей нужно выбрать 2 или 3 комнаты');
-  } else if (evt.target.value === '3' && roomNumberInput.value !== '3') {
-    capacityInput.setCustomValidity('Для 3-х гостей нужно выбрать 3 комнаты');
-  } else if  (evt.target.value === '0' && roomNumberInput.value !== '100') {
-    capacityInput.setCustomValidity('Не для гостей можно выбрать 100 комнат');
+  const capacity = evt.target.value;
+  const errorMessages = roomToCapacity[capacity];
+  if (errorMessages && errorMessages.validValues.every(value => roomNumberInput.value !== value.toString())) {
+    capacityInput.setCustomValidity(roomToCapacity[capacity].message);
   } else {
     capacityInput.setCustomValidity('');
   }
@@ -72,14 +82,10 @@ capacityInput.addEventListener('change', (evt) => {
 });
 
 roomNumberInput.addEventListener('change', (evt) => {
-  if (evt.target.value === '1' && capacityInput.value !== '1') {
-    capacityInput.setCustomValidity('1 комната для 1 гостя');
-  } else if (evt.target.value === '2' && capacityInput.value !== '1' && capacityInput.value !== '2') {
-    capacityInput.setCustomValidity('Можно выбрать 1 или 2 гостя');
-  } else if (evt.target.value === '3' && capacityInput.value !== '1' && capacityInput.value !== '2' && capacityInput.value !== '3') {
-    capacityInput.setCustomValidity('Можно выбрать 1, 2 или 3 гостя');
-  } else if  (evt.target.value === '100' && capacityInput.value !== '0') {
-    capacityInput.setCustomValidity('100 комнат не для гостей');
+  const roomNumber = evt.target.value;
+  const errorMessages = capacityToRoom[roomNumber];
+  if (errorMessages && errorMessages.validValues.every(value => capacityInput.value !== value.toString())) {
+    capacityInput.setCustomValidity(capacityToRoom[roomNumber].message);
   } else {
     capacityInput.setCustomValidity('');
   }
@@ -116,7 +122,7 @@ roomNumberInput.addEventListener('input', (evt) => {
       if (option.value !== '0') {
         option.disabled = true;
       } else {
-        option.disabled = true;
+        option.disabled = false;
       }
     }
   }
