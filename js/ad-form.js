@@ -73,22 +73,26 @@ timeOutInput.addEventListener('change', (evt) => {
 capacityInput.addEventListener('change', (evt) => {
   const capacity = evt.target.value;
   const errorMessages = roomToCapacity[capacity];
+
   if (errorMessages && errorMessages.validValues.every(value => roomNumberInput.value !== value.toString())) {
     capacityInput.setCustomValidity(roomToCapacity[capacity].message);
   } else {
     capacityInput.setCustomValidity('');
   }
+
   capacityInput.reportValidity();
 });
 
 roomNumberInput.addEventListener('change', (evt) => {
   const roomNumber = evt.target.value;
   const errorMessages = capacityToRoom[roomNumber];
+
   if (errorMessages && errorMessages.validValues.every(value => capacityInput.value !== value.toString())) {
     capacityInput.setCustomValidity(capacityToRoom[roomNumber].message);
   } else {
     capacityInput.setCustomValidity('');
   }
+
   capacityInput.reportValidity();
 });
 
