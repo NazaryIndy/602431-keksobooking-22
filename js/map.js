@@ -1,4 +1,4 @@
-import { disableForm, enableForm } from './forms-controller.js';
+import { disableForm, enableForm, setAddresValue } from './forms-controller.js';
 import { renderOffers } from './offer.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
@@ -15,12 +15,15 @@ const PIN_HEIGHT = 40;
 const L = window.L;
 const adForm = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
-const addressField = adForm.querySelector('#address');
 
-getData(
-  (offers) => addOffersToMap(offers),
-  () => showAlert('Не удалось загрузить предложения. Попробуйте позже'),
-);
+try {
+  getData(
+    (offers) => addOffersToMap(offers),
+    () => showAlert('Не удалось загрузить предложения. Попробуйте позже'),
+  );
+} catch (err) {
+  showAlert('Не удалось загрузить предложения. Попробуйте позже');
+}
 
 const enableApp = () => {
   enableForm(adForm, 'ad-form');
@@ -30,10 +33,6 @@ const enableApp = () => {
 const disableApp = () => {
   disableForm(adForm, 'ad-form');
   disableForm(mapFiltersForm, 'map__filters');
-};
-
-const setAddresValue = ({lat, lng}) => {
-  addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
 disableApp();
@@ -99,3 +98,5 @@ const addOffersToMap = (offers) => {
       );
   });
 }
+
+export { marker };

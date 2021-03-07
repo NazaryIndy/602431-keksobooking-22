@@ -1,3 +1,6 @@
+const adForm = document.querySelector('.ad-form');
+const addressField = adForm.querySelector('#address');
+
 const disableForm = (form, className) => {
   form.classList.add(`${className}--disabled`);
   for (let i = 0; i < form.children.length; i++) {
@@ -12,4 +15,8 @@ const enableForm = (form, className) => {
   }
 };
 
-export { enableForm, disableForm };
+const setAddresValue = ({lat, lng}) => {
+  addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+};
+
+export { enableForm, disableForm, setAddresValue};

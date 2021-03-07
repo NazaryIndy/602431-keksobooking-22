@@ -1,5 +1,7 @@
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
+import { setAddresValue } from './forms-controller.js';
+import { marker } from './map.js';
 
 const MinPrices = {
   BUNGALOW: 0,
@@ -10,6 +12,10 @@ const MinPrices = {
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
+const TOKIO_COORDINATES = {
+  lat: 35.652832,
+  lng: 139.839478,
+};
 
 const addForm = document.querySelector('.ad-form');
 const typeOfHousingInput = addForm.querySelector('#type');
@@ -20,7 +26,6 @@ const titleInput = addForm.querySelector('#title');
 const roomNumberInput = addForm.querySelector('#room_number');
 const capacityInput = addForm.querySelector('#capacity');
 const options = capacityInput.querySelectorAll('option');
-const addressInput = addForm.querySelector('#address');
 const resetFormButton = addForm.querySelector('.ad-form__reset');
 const mapFiltersForm = document.querySelector('.map__filters');
 
@@ -138,15 +143,16 @@ roomNumberInput.addEventListener('input', (evt) => {
   }
 });
 
-// TODO
 const resetForms = () => {
-  const address = addressInput.value;
   addForm.reset();
   mapFiltersForm.reset();
-  addressInput.value = address;
+  setTimeout(() => {
+    setAddresValue(TOKIO_COORDINATES);
+    marker.setLatLng(TOKIO_COORDINATES);
+  });
 }
 
-const onSuccessSubmit = () => {
+const putDefaultState = () => {
   resetForms();
   showSuccessMessage();
 }
@@ -155,7 +161,7 @@ addForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   sendData(
-    () => onSuccessSubmit(),
+    () => putDefaultState(),
     () => showErrorMessage(),
     new FormData(evt.target),
   )
@@ -163,5 +169,5 @@ addForm.addEventListener('submit', (evt) => {
 
 resetFormButton.addEventListener('click', () => {
   resetForms();
-})
+});
 
