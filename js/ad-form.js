@@ -144,9 +144,7 @@ roomNumberInput.addEventListener('input', (evt) => {
 const resetForms = () => {
   addForm.reset();
   mapFiltersForm.reset();
-  setTimeout(() => {
-    resetDefaultCoordinates();
-  });
+  resetDefaultCoordinates();
 }
 
 const putDefaultState = () => {
@@ -164,7 +162,8 @@ addForm.addEventListener('submit', (evt) => {
   )
 });
 
-resetFormButton.addEventListener('click', () => {
+resetFormButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
   resetForms();
 });
 
