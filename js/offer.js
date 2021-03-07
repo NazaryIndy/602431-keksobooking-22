@@ -45,6 +45,7 @@ const renderOffers = (offers) => {
     offerElement.querySelector('.popup__avatar').src = author.avatar;
     offersFragment.appendChild(offerElement);
   });
+
   return offersFragment;
 };
 

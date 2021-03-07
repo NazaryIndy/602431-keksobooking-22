@@ -1,6 +1,7 @@
 import { disableForm, enableForm } from './forms-controller.js';
-import { generateOffers } from './data.js';
 import { renderOffers } from './offer.js';
+import { getData } from './api.js';
+import { showAlert } from './util.js';
 
 const TOKIO_COORDINATES = {
   lat: 35.652832,
@@ -16,8 +17,10 @@ const adForm = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
 const addressField = adForm.querySelector('#address');
 
-const offers = generateOffers();
-const offersCard = renderOffers(offers).children;
+getData(
+  (offers) => addOffersToMap(offers),
+  () => showAlert('Не удалось загрузить предложения. Попробуйте позже'),
+);
 
 const enableApp = () => {
   enableForm(adForm, 'ad-form');
@@ -31,9 +34,7 @@ const disableApp = () => {
 
 const setAddresValue = ({lat, lng}) => {
   addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-}
-
-addressField.readOnly = true;
+};
 
 disableApp();
 
@@ -69,28 +70,32 @@ marker.on('moveend', (evt) => {
   setAddresValue(evt.target.getLatLng());
 });
 
-offers.forEach(({location}, index) => {
-  const icon = L.icon({
-    iconUrl: '../img/pin.svg',
-    iconSize: [PIN_WIDTH, PIN_HEIGHT],
-    iconAnchor: [PIN_WIDTH / 2, PIN_HEIGHT],
-  });
+const addOffersToMap = (offers) => {
+  const offersCards = renderOffers(offers).children;
 
-  const marker = L.marker(
-    {
-      lat: location.x,
-      lng: location.y,
-    },
-    {
-      icon,
-    },
-  );
+  offers.forEach(({location}, index) => {
+    const icon = L.icon({
+      iconUrl: '../img/pin.svg',
+      iconSize: [PIN_WIDTH, PIN_HEIGHT],
+      iconAnchor: [PIN_WIDTH / 2, PIN_HEIGHT],
+    });
 
-  marker
-    .addTo(map)
-    .bindPopup(offersCard[index],
+    const marker = L.marker(
       {
-        keepInView: true,
+        lat: location.lat,
+        lng: location.lng,
+      },
+      {
+        icon,
       },
     );
-});
+
+    marker
+      .addTo(map)
+      .bindPopup(offersCards[index],
+        {
+          keepInView: true,
+        },
+      );
+  });
+}

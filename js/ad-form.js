@@ -1,3 +1,6 @@
+import { sendData } from './api.js';
+import { showSuccessMessage, showErrorMessage } from './message.js';
+
 const MinPrices = {
   BUNGALOW: 0,
   FLAT: 1000,
@@ -8,15 +11,18 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 
-const form = document.querySelector('.ad-form');
-const typeOfHousingInput = form.querySelector('#type');
-const priceInput = form.querySelector('#price');
-const timeInInput = form.querySelector('#timein');
-const timeOutInput = form.querySelector('#timeout');
-const titleInput = form.querySelector('#title');
-const roomNumberInput = form.querySelector('#room_number');
-const capacityInput = form.querySelector('#capacity');
+const addForm = document.querySelector('.ad-form');
+const typeOfHousingInput = addForm.querySelector('#type');
+const priceInput = addForm.querySelector('#price');
+const timeInInput = addForm.querySelector('#timein');
+const timeOutInput = addForm.querySelector('#timeout');
+const titleInput = addForm.querySelector('#title');
+const roomNumberInput = addForm.querySelector('#room_number');
+const capacityInput = addForm.querySelector('#capacity');
 const options = capacityInput.querySelectorAll('option');
+const addressInput = addForm.querySelector('#address');
+const resetFormButton = addForm.querySelector('.ad-form__reset');
+const mapFiltersForm = document.querySelector('.map__filters');
 
 const capacityToRoom = {
   1: { validValues: [1], message: '1 комната для 1 гостя' },
@@ -131,3 +137,31 @@ roomNumberInput.addEventListener('input', (evt) => {
     }
   }
 });
+
+// TODO
+const resetForms = () => {
+  const address = addressInput.value;
+  addForm.reset();
+  mapFiltersForm.reset();
+  addressInput.value = address;
+}
+
+const onSuccessSubmit = () => {
+  resetForms();
+  showSuccessMessage();
+}
+
+addForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  sendData(
+    () => onSuccessSubmit(),
+    () => showErrorMessage(),
+    new FormData(evt.target),
+  )
+});
+
+resetFormButton.addEventListener('click', () => {
+  resetForms();
+})
+
