@@ -27,9 +27,9 @@ getData(
       addOffersToMap(offers)
     });
   },
-  () => {
+  (errorMessage) => {
     disableForm(mapFiltersForm, 'map__filters');
-    showAlert('Не удалось загрузить предложения. Попробуйте позже')
+    showAlert(errorMessage);
   },
 );
 
