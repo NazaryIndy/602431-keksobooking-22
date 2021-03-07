@@ -3,6 +3,7 @@ import { renderOffers } from './offer.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
 
+const OFFERS_TO_RENDER_NUMBER = 10;
 const TOKIO_COORDINATES = {
   lat: 35.652832,
   lng: 139.839478,
@@ -69,34 +70,39 @@ marker.on('moveend', (evt) => {
   setAddresValue(evt.target.getLatLng());
 });
 
-const addOffersToMap = (offers) => {
+
+
+const addOffersToMap = (data) => {
+  const offers = data.slice().slice(0, OFFERS_TO_RENDER_NUMBER);
+
   const offersCards = renderOffers(offers).children;
 
-  offers.forEach(({location}, index) => {
-    const icon = L.icon({
-      iconUrl: '../img/pin.svg',
-      iconSize: [PIN_WIDTH, PIN_HEIGHT],
-      iconAnchor: [PIN_WIDTH / 2, PIN_HEIGHT],
-    });
+  offers
+    .forEach(({location}, index) => {
+      const icon = L.icon({
+        iconUrl: '../img/pin.svg',
+        iconSize: [PIN_WIDTH, PIN_HEIGHT],
+        iconAnchor: [PIN_WIDTH / 2, PIN_HEIGHT],
+      });
 
-    const marker = L.marker(
-      {
-        lat: location.lat,
-        lng: location.lng,
-      },
-      {
-        icon,
-      },
-    );
-
-    marker
-      .addTo(map)
-      .bindPopup(offersCards[index],
+      const marker = L.marker(
         {
-          keepInView: true,
+          lat: location.lat,
+          lng: location.lng,
+        },
+        {
+          icon,
         },
       );
-  });
+
+      marker
+        .addTo(map)
+        .bindPopup(offersCards[index],
+          {
+            keepInView: true,
+          },
+        );
+    });
 }
 
 export { marker };
