@@ -11,38 +11,38 @@ const errorPopupTemplate = document.querySelector('#error')
 
 const errorButtonElement = errorPopupTemplate.querySelector('.error__button');
 
+const onSuccessMessageEscKeydown = (evt) => {
+  if (isEscEvent()) {
+    evt.preventDefault();
+    removeSuccessMessage();
+  }
+};
+
+const onErrorMessageEscKeydown = (evt) => {
+  if (isEscEvent()) {
+    evt.preventDefault();
+    removeErrorMessage();
+  }
+};
+
 const showSuccessMessage = () => {
   main.appendChild(succesPopupTemplate);
+  document.addEventListener('keydown', onSuccessMessageEscKeydown);
 }
 
 const removeSuccessMessage = () => {
   succesPopupTemplate.remove();
+  document.removeEventListener('keydown', onSuccessMessageEscKeydown);
 }
 
 const showErrorMessage = () => {
   main.appendChild(errorPopupTemplate);
+  document.addEventListener('keydown', onErrorMessageEscKeydown);
 }
 
 const removeErrorMessage = () => {
   errorPopupTemplate.remove();
-}
-
-if (document.body.contains(succesPopupTemplate)) {
-  document.addEventListener('keydown', (evt) => {
-    if (isEscEvent()) {
-      evt.preventDefault();
-      removeSuccessMessage();
-    }
-  });
-}
-
-if (document.body.contains(errorPopupTemplate)) {
-  document.addEventListener('keydown', (evt) => {
-    if (isEscEvent()) {
-      evt.preventDefault();
-      removeErrorMessage();
-    }
-  });
+  document.removeEventListener('keydown', onErrorMessageEscKeydown);
 }
 
 errorButtonElement.addEventListener('click', () => {

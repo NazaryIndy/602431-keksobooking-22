@@ -1,4 +1,4 @@
-import { disableForm, enableForm, setAddresValue } from './forms-controller.js';
+import { disableForm, enableForm } from './forms-controller.js';
 import { renderOffers } from './offer.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
@@ -15,15 +15,15 @@ const PIN_HEIGHT = 40;
 const L = window.L;
 const adForm = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
+const addressField = adForm.querySelector('#address');
 
-try {
-  getData(
-    (offers) => addOffersToMap(offers),
-    () => showAlert('Не удалось загрузить предложения. Попробуйте позже'),
-  );
-} catch (err) {
-  showAlert('Не удалось загрузить предложения. Попробуйте позже');
-}
+getData(
+  (offers) => addOffersToMap(offers),
+  () => {
+    disableForm(mapFiltersForm, 'map__filters');
+    showAlert('Не удалось загрузить предложения. Попробуйте позже')
+  },
+);
 
 const enableApp = () => {
   enableForm(adForm, 'ad-form');
@@ -35,7 +35,16 @@ const disableApp = () => {
   disableForm(mapFiltersForm, 'map__filters');
 };
 
+const resetDefaultCoordinates = () => {
+  marker.setLatLng(TOKIO_COORDINATES);
+  setAddresValue(TOKIO_COORDINATES);
+}
+
 disableApp();
+
+const setAddresValue = ({lat, lng}) => {
+  addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+};
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -99,4 +108,4 @@ const addOffersToMap = (offers) => {
   });
 }
 
-export { marker };
+export { resetDefaultCoordinates };

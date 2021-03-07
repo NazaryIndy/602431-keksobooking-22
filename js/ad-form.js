@@ -1,7 +1,6 @@
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
-import { setAddresValue } from './forms-controller.js';
-import { marker } from './map.js';
+import { resetDefaultCoordinates } from './map.js';
 
 const MinPrices = {
   BUNGALOW: 0,
@@ -12,10 +11,6 @@ const MinPrices = {
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
-const TOKIO_COORDINATES = {
-  lat: 35.652832,
-  lng: 139.839478,
-};
 
 const addForm = document.querySelector('.ad-form');
 const typeOfHousingInput = addForm.querySelector('#type');
@@ -150,8 +145,7 @@ const resetForms = () => {
   addForm.reset();
   mapFiltersForm.reset();
   setTimeout(() => {
-    setAddresValue(TOKIO_COORDINATES);
-    marker.setLatLng(TOKIO_COORDINATES);
+    resetDefaultCoordinates();
   });
 }
 

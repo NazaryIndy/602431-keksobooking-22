@@ -56,6 +56,10 @@ const showAlert = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
+
+  alertContainer.addEventListener('click', () => {
+    alertContainer.remove();
+  });
 }
 
 export { getIntegerRandom, getFloatRandom, getRandomArrayElement, getRandomArray, showAlert, isEscEvent };
