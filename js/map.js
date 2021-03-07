@@ -2,6 +2,7 @@ import { disableForm, enableForm } from './forms-controller.js';
 import { renderOffers } from './offer.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
+import { setType } from './map-form.js';
 
 const OFFERS_TO_RENDER_NUMBER = 10;
 const TOKIO_COORDINATES = {
@@ -16,10 +17,16 @@ const PIN_HEIGHT = 40;
 const L = window.L;
 const adForm = document.querySelector('.ad-form');
 const mapFiltersForm = document.querySelector('.map__filters');
-const addressField = adForm.querySelector('#address');
+const addressInput = adForm.querySelector('#address');
 
 getData(
-  (offers) => addOffersToMap(offers),
+  (offers) => {
+    addOffersToMap(offers);
+    setType(() => {
+      markers.clearLayers();
+      addOffersToMap(offers)
+    });
+  },
   () => {
     disableForm(mapFiltersForm, 'map__filters');
     showAlert('Не удалось загрузить предложения. Попробуйте позже')
@@ -44,7 +51,7 @@ const resetDefaultCoordinates = () => {
 disableApp();
 
 const setAddresValue = ({lat, lng}) => {
-  addressField.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  addressInput.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
 const map = L.map('map-canvas')
@@ -53,6 +60,8 @@ const map = L.map('map-canvas')
     enableApp();
   })
   .setView(TOKIO_COORDINATES, 10);
+
+const markers = new L.LayerGroup().addTo(map);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -79,11 +88,32 @@ marker.on('moveend', (evt) => {
   setAddresValue(evt.target.getLatLng());
 });
 
+const getOfferRank = ({offer}) => {
+  const typeInput = mapFiltersForm.querySelector('[name="housing-type"]');
 
+  let rank = 0;
+  if (typeInput.value === 'any') {
+    rank += 1;
+  } else if (offer.type === typeInput.value) {
+    rank += 1;
+  }
+
+  return rank;
+};
+
+const compareOffers = (offerA, offerB) => {
+  const rankA = getOfferRank(offerA);
+  const rankB = getOfferRank(offerB);
+
+  return rankB - rankA;
+}
 
 const addOffersToMap = (data) => {
-  const offers = data.slice().slice(0, OFFERS_TO_RENDER_NUMBER);
-
+  const offers = data
+    .slice()
+    .sort(compareOffers)
+    .filter((offer) => getOfferRank(offer) !== 0)
+    .slice(0, OFFERS_TO_RENDER_NUMBER);
   const offersCards = renderOffers(offers).children;
 
   offers
@@ -105,7 +135,7 @@ const addOffersToMap = (data) => {
       );
 
       marker
-        .addTo(map)
+        .addTo(markers)
         .bindPopup(offersCards[index],
           {
             keepInView: true,
