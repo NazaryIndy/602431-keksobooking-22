@@ -43,10 +43,13 @@ const roomToCapacity = {
   0: { validValues: [100], message: 'Не для гостей можно выбрать 100 комнат' },
 };
 
-priceInput.addEventListener('change', () => {
-  const valueLength = priceInput.value
+priceInput.addEventListener('change', (evt) => {
+  const price = evt.target.value;
+  const minPrice = typeOfHousingInput.value.toUpperCase();
 
-  if (valueLength > MAX_PRICE) {
+  if (price < MinPrices[minPrice]) {
+    priceInput.setCustomValidity(`Минимальная цена за этот типа жилья ${MinPrices[minPrice]}`);
+  } else if (price > MAX_PRICE) {
     priceInput.setCustomValidity('Значение должно быть меньше или равно 1000000');
   } else {
     priceInput.setCustomValidity('');
