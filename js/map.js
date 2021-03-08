@@ -1,7 +1,7 @@
 /* global L:readonly */
 
 import { renderOffers } from './offer.js';
-import { mapFiltersForm } from './map-form.js';
+import { compareOffers, filterOffers } from './map-form.js';
 import { adForm, addressInput } from './ad-form.js';
 import { enableForm } from './util.js';
 
@@ -72,31 +72,11 @@ mainMarker.on('moveend', (evt) => {
   setAddresValue(evt.target.getLatLng());
 });
 
-const getOfferRank = ({offer}) => {
-  const typeInput = mapFiltersForm.querySelector('[name="housing-type"]');
-
-  let rank = 0;
-  if (typeInput.value === 'any') {
-    rank += 1;
-  } else if (offer.type === typeInput.value) {
-    rank += 1;
-  }
-
-  return rank;
-};
-
-const compareOffers = (offerA, offerB) => {
-  const rankA = getOfferRank(offerA);
-  const rankB = getOfferRank(offerB);
-
-  return rankB - rankA;
-}
-
 const addOffersToMap = (data) => {
   const offers = data
     .slice()
     .sort(compareOffers)
-    .filter((offer) => getOfferRank(offer) !== 0)
+    .filter(filterOffers)
     .slice(0, OFFERS_TO_RENDER_NUMBER);
   const offersCards = renderOffers(offers).children;
 
