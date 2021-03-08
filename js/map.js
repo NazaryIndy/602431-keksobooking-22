@@ -1,8 +1,6 @@
-import { disableForm, enableForm } from './forms-controller.js';
 import { renderOffers } from './offer.js';
-import { getData } from './api.js';
-import { showAlert } from './util.js';
-import { setType } from './map-form.js';
+import { mapFiltersForm } from './map-form.js';
+import { enableForm } from './util.js';
 
 const OFFERS_TO_RENDER_NUMBER = 10;
 const TOKIO_COORDINATES = {
@@ -16,48 +14,30 @@ const PIN_HEIGHT = 40;
 
 const L = window.L;
 const adForm = document.querySelector('.ad-form');
-const mapFiltersForm = document.querySelector('.map__filters');
 const addressInput = adForm.querySelector('#address');
 
-getData(
-  (offers) => {
-    addOffersToMap(offers);
-    setType(() => {
-      markers.clearLayers();
-      addOffersToMap(offers)
-    });
-  },
-  (errorMessage) => {
-    disableForm(mapFiltersForm, 'map__filters');
-    showAlert(errorMessage);
-  },
-);
-
-const enableApp = () => {
-  enableForm(adForm, 'ad-form');
-  enableForm(mapFiltersForm, 'map__filters');
-};
-
-const disableApp = () => {
-  disableForm(adForm, 'ad-form');
-  disableForm(mapFiltersForm, 'map__filters');
-};
-
-const resetDefaultCoordinates = () => {
-  marker.setLatLng(TOKIO_COORDINATES);
+const setDefaultCoordinates = () => {
+  mainMarker.setLatLng(TOKIO_COORDINATES);
   setAddresValue(TOKIO_COORDINATES);
-}
+};
 
-disableApp();
+const setMainPinMarker = () => {
+  mainMarker.setLatLng({TOKIO_COORDINATES});
+};
 
 const setAddresValue = ({lat, lng}) => {
   addressInput.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 };
 
+const clearMarkers = () => {
+  markers.clearLayers();
+};
+
 const map = L.map('map-canvas')
   .on('load', () => {
+    enableForm(adForm, 'ad-form');
+    enableForm(mapFiltersForm, 'map__filters');
     setAddresValue(TOKIO_COORDINATES);
-    enableApp();
   })
   .setView(TOKIO_COORDINATES, 10);
 
@@ -76,7 +56,7 @@ const mainPinIcon = L.icon({
   iconAnchor: [MAIN_PIN_WIDTH / 2, MAIN_PIN_HEIGHT],
 });
 
-const marker = L.marker(
+const mainMarker = L.marker(
   TOKIO_COORDINATES,
   {
     draggable: true,
@@ -84,7 +64,7 @@ const marker = L.marker(
   },
 ).addTo(map);
 
-marker.on('moveend', (evt) => {
+mainMarker.on('moveend', (evt) => {
   setAddresValue(evt.target.getLatLng());
 });
 
@@ -142,6 +122,6 @@ const addOffersToMap = (data) => {
           },
         );
     });
-}
+};
 
-export { resetDefaultCoordinates };
+export { setDefaultCoordinates, addOffersToMap, clearMarkers, setMainPinMarker };

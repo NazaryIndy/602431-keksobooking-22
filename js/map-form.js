@@ -1,5 +1,13 @@
+import { disableForm } from './util.js';
+
 const mapFiltersForm = document.querySelector('.map__filters');
 const typeInput = mapFiltersForm.querySelector('[name="housing-type"]');
+
+const resetMapForm = () => {
+  mapFiltersForm.reset();
+}
+
+disableForm(mapFiltersForm, 'map__filters');
 
 const setType = (cb) => {
   typeInput.addEventListener('change', (evt) => {
@@ -8,4 +16,4 @@ const setType = (cb) => {
   });
 };
 
-export { setType };
+export { mapFiltersForm, resetMapForm, setType };
