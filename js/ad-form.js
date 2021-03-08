@@ -1,6 +1,6 @@
+import { disableForm } from './util.js';
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
-import { resetDefaultCoordinates } from './map.js';
 
 const MinPrices = {
   BUNGALOW: 0,
@@ -12,17 +12,16 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 
-const addForm = document.querySelector('.ad-form');
-const typeOfHousingInput = addForm.querySelector('#type');
-const priceInput = addForm.querySelector('#price');
-const timeInInput = addForm.querySelector('#timein');
-const timeOutInput = addForm.querySelector('#timeout');
-const titleInput = addForm.querySelector('#title');
-const roomNumberInput = addForm.querySelector('#room_number');
-const capacityInput = addForm.querySelector('#capacity');
+const adForm = document.querySelector('.ad-form');
+const addressInput = adForm.querySelector('#address');
+const typeOfHousingInput = adForm.querySelector('#type');
+const priceInput = adForm.querySelector('#price');
+const timeInInput = adForm.querySelector('#timein');
+const timeOutInput = adForm.querySelector('#timeout');
+const titleInput = adForm.querySelector('#title');
+const roomNumberInput = adForm.querySelector('#room_number');
+const capacityInput = adForm.querySelector('#capacity');
 const options = capacityInput.querySelectorAll('option');
-const resetFormButton = addForm.querySelector('.ad-form__reset');
-const mapFiltersForm = document.querySelector('.map__filters');
 
 const capacityToRoom = {
   1: { validValues: [1], message: '1 комната для 1 гостя' },
@@ -37,6 +36,12 @@ const roomToCapacity = {
   3: { validValues:[3], message: 'Для 3-х гостей нужно выбрать 3 комнаты' },
   0: { validValues: [100], message: 'Не для гостей можно выбрать 100 комнат' },
 };
+
+const resetAdForm = () => {
+  adForm.reset();
+}
+
+disableForm(adForm, 'ad-form');
 
 priceInput.addEventListener('change', (evt) => {
   const price = evt.target.value;
@@ -141,30 +146,21 @@ roomNumberInput.addEventListener('input', (evt) => {
   }
 });
 
-const resetForms = () => {
-  addForm.reset();
-  mapFiltersForm.reset();
-  setTimeout(() => {
-    resetDefaultCoordinates();
+const setAdFormSubmit = (onSuccess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(),
+      () => showSuccessMessage(),
+      () => showErrorMessage(),
+      new FormData(evt.target),
+    )
   });
 }
 
-const putDefaultState = () => {
-  resetForms();
-  showSuccessMessage();
-}
+const setAdFormReset = (resetForm) => {
+  adForm.addEventListener('reset', resetForm);
+};
 
-addForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-
-  sendData(
-    () => putDefaultState(),
-    () => showErrorMessage(),
-    new FormData(evt.target),
-  )
-});
-
-resetFormButton.addEventListener('click', () => {
-  resetForms();
-});
-
+export { setAdFormSubmit, setAdFormReset, resetAdForm, adForm, addressInput };

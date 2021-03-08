@@ -15,7 +15,7 @@ const getData = (onSuccess, onFail) => {
     });
 };
 
-const sendData = (onSuccess, onFail, body) => {
+const sendData = (onSuccess, successMessage, errorMessage, body) => {
   fetch('https://22.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
@@ -24,13 +24,14 @@ const sendData = (onSuccess, onFail, body) => {
   )
     .then((response) => {
       if (response.ok) {
+        successMessage();
         onSuccess();
       } else {
-        onFail('Не удалось отправить форму. Попробуйте ещё раз');
+        errorMessage()
       }
     })
     .catch(() => {
-      onFail('Не удалось отправить форму. Попробуйте ещё раз');
+      errorMessage()
     });
 };
 
