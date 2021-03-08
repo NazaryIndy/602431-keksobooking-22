@@ -41,7 +41,7 @@ const resetAdForm = () => {
   adForm.reset();
 }
 
-disableForm(adForm, 'ad-form')
+disableForm(adForm, 'ad-form');
 
 priceInput.addEventListener('change', (evt) => {
   const price = evt.target.value;
