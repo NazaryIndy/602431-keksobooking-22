@@ -1,5 +1,8 @@
+/* global L:readonly */
+
 import { renderOffers } from './offer.js';
 import { mapFiltersForm } from './map-form.js';
+import { adForm, addressInput } from './ad-form.js';
 import { enableForm } from './util.js';
 
 const OFFERS_TO_RENDER_NUMBER = 10;
@@ -12,10 +15,6 @@ const MAIN_PIN_HEIGHT = 52;
 const PIN_WIDTH = 40;
 const PIN_HEIGHT = 40;
 
-const L = window.L;
-const adForm = document.querySelector('.ad-form');
-const addressInput = adForm.querySelector('#address');
-
 const setDefaultCoordinates = () => {
   mainMarker.setLatLng(TOKIO_COORDINATES);
   setAddresValue(TOKIO_COORDINATES);
@@ -25,8 +24,12 @@ const setMainPinMarker = () => {
   mainMarker.setLatLng({TOKIO_COORDINATES});
 };
 
+const formatAddressString = ({lat, lng}) => {
+  return `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+}
+
 const setAddresValue = ({lat, lng}) => {
-  addressInput.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  addressInput.value = formatAddressString({lat, lng});
 };
 
 const clearMarkers = () => {
@@ -36,12 +39,13 @@ const clearMarkers = () => {
 const map = L.map('map-canvas')
   .on('load', () => {
     enableForm(adForm, 'ad-form');
-    enableForm(mapFiltersForm, 'map__filters');
     setAddresValue(TOKIO_COORDINATES);
   })
   .setView(TOKIO_COORDINATES, 10);
 
 const markers = new L.LayerGroup().addTo(map);
+
+addressInput.defaultValue = formatAddressString(TOKIO_COORDINATES);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

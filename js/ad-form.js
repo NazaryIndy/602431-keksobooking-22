@@ -13,6 +13,7 @@ const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 
 const adForm = document.querySelector('.ad-form');
+const addressInput = adForm.querySelector('#address');
 const typeOfHousingInput = adForm.querySelector('#type');
 const priceInput = adForm.querySelector('#price');
 const timeInInput = adForm.querySelector('#timein');
@@ -162,4 +163,4 @@ const setAdFormReset = (resetForm) => {
   adForm.addEventListener('reset', resetForm);
 };
 
-export { setAdFormSubmit, setAdFormReset, resetAdForm, adForm };
+export { setAdFormSubmit, setAdFormReset, resetAdForm, adForm, addressInput };

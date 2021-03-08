@@ -5,7 +5,7 @@ import { setDefaultCoordinates } from './map.js';
 const resetForm = () => {
   resetAdForm();
   resetMapForm();
-  setTimeout(() => setDefaultCoordinates());
+  setDefaultCoordinates();
 };
 
 export { resetForm };
