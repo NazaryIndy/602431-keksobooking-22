@@ -76,6 +76,16 @@ const enableForm = (form, className) => {
   }
 };
 
+const debounce = (cb, delay) => {
+  let timeout = null;
+
+  return ((...args) => {
+    const next = () => cb(...args);
+    clearTimeout(timeout);
+    timeout = setTimeout(next, delay);
+  })
+};
+
 export {
   getIntegerRandom,
   getFloatRandom,
@@ -84,5 +94,6 @@ export {
   showAlert,
   isEscEvent,
   disableForm,
-  enableForm
+  enableForm,
+  debounce
 };
