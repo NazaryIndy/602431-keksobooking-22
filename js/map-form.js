@@ -67,14 +67,11 @@ const filterOffers = ({offer}) => {
   const checkedFeatures = [...mapFiltersForm.querySelector('#housing-features')
     .querySelectorAll('input[type="checkbox"]:checked')];
 
-  if ((offer.type === typeInput.value || typeInput.value === 'any') &&
+  return ((offer.type === typeInput.value || typeInput.value === 'any') &&
     (comparePrice(offer.price, priceInput.value)) &&
     (offer.rooms.toString() === roomsInput.value || roomsInput.value === 'any') &&
     (compareGuests(offer.guests, guestsInput.value)) &&
-    (checkedFeatures.every(feature=> offer.features.includes(feature.defaultValue)))) {
-    return offer;
-  }
-  return;
+    (checkedFeatures.every((feature) => offer.features.includes(feature.defaultValue))));
 };
 
 const setFilters = (cb) => {
