@@ -1,4 +1,3 @@
-
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const fileChooser = document.querySelector('.ad-form__field input[type=file]');
