@@ -1,5 +1,7 @@
-/* global L:readonly */
-
+// /* global L:readonly */
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+// import 'leaflet';
 import { renderOffers } from './offer.js';
 import { compareOffers, filterOffers } from './map-form.js';
 import { adForm, addressInput } from './ad-form.js';
