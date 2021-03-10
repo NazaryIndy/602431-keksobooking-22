@@ -31,7 +31,7 @@ fileChooser.addEventListener('change', () => {
 
     reader.addEventListener('load', () => {
       avatarPreview.src = reader.result;
-    })
+    });
 
     reader.readAsDataURL(file);
   }
