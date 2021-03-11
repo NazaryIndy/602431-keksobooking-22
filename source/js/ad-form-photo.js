@@ -13,7 +13,7 @@ const isMatch = (type) => {
 
 const createImageElement = (src, alt) => {
   const imgElement = document.createElement('img');
-  imgElement.src = src.result;
+  imgElement.src = src;
   imgElement.alt = alt;
   imgElement.width = 70;
   imgElement.height = 70;
@@ -24,10 +24,8 @@ const createImageElement = (src, alt) => {
 fileChooser.addEventListener('change', () => {
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
-
   if (isMatch(fileName)) {
     const reader = new FileReader();
-
     reader.addEventListener('load', () => {
       avatarPreview.src = reader.result;
     });
@@ -39,10 +37,8 @@ fileChooser.addEventListener('change', () => {
 photoChooser.addEventListener('change', () => {
   const file = photoChooser.files[0];
   const fileName = file.name.toLowerCase();
-
   if (isMatch(fileName)) {
     const reader = new FileReader();
-
     reader.addEventListener('load', () => {
       photoPreview.innerHTML = '';
       createImageElement(reader.result, fileName);

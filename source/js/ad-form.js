@@ -11,6 +11,7 @@ const MinPrices = {
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
+const DEFAULT_AVATAR_URL = 'img/muffin-grey.svg';
 
 const adForm = document.querySelector('.ad-form');
 const addressInput = adForm.querySelector('#address');
@@ -37,7 +38,15 @@ const roomToCapacity = {
   0: { validValues: [100], message: 'Не для гостей можно выбрать 100 комнат' },
 };
 
+const resetPhotos = () => {
+  const avatarPreview = document.querySelector('.ad-form-header__preview img');
+  const photoPreview = document.querySelector('.ad-form__photo');
+  photoPreview.innerHTML = '';
+  avatarPreview.src = DEFAULT_AVATAR_URL;
+};
+
 const resetAdForm = () => {
+  resetPhotos();
   adForm.reset();
 }
 
