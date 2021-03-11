@@ -21,29 +21,37 @@ const createImageElement = (src, alt) => {
   photoPreview.appendChild(imgElement);
 };
 
-fileChooser.addEventListener('change', () => {
-  const file = fileChooser.files[0];
-  const fileName = file.name.toLowerCase();
-  if (isMatch(fileName)) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => {
-      avatarPreview.src = reader.result;
-    });
+const addPhotosListener = () => {
+  fileChooser.addEventListener('change', () => {
+    const file = fileChooser.files[0];
+    const fileName = file.name.toLowerCase();
 
-    reader.readAsDataURL(file);
-  }
-});
+    if (isMatch(fileName)) {
+      const reader = new FileReader();
 
-photoChooser.addEventListener('change', () => {
-  const file = photoChooser.files[0];
-  const fileName = file.name.toLowerCase();
-  if (isMatch(fileName)) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => {
-      photoPreview.innerHTML = '';
-      createImageElement(reader.result, fileName);
-    });
+      reader.addEventListener('load', () => {
+        avatarPreview.src = reader.result;
+      });
 
-    reader.readAsDataURL(file);
-  }
-});
+      reader.readAsDataURL(file);
+    }
+  });
+
+  photoChooser.addEventListener('change', () => {
+    const file = photoChooser.files[0];
+    const fileName = file.name.toLowerCase();
+
+    if (isMatch(fileName)) {
+      const reader = new FileReader();
+
+      reader.addEventListener('load', () => {
+        photoPreview.innerHTML = '';
+        createImageElement(reader.result, fileName);
+      });
+
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+export { addPhotosListener };
