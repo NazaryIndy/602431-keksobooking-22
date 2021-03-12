@@ -2,7 +2,7 @@
 import { isEscEvent } from './util.js';
 
 const main = document.querySelector('main');
-const succesPopupTemplate = document.querySelector('#success')
+const successPopupTemplate = document.querySelector('#success')
   .content
   .querySelector('.success');
 const errorPopupTemplate = document.querySelector('#error')
@@ -26,12 +26,12 @@ const onErrorMessageEscKeydown = (evt) => {
 };
 
 const showSuccessMessage = () => {
-  main.appendChild(succesPopupTemplate);
+  main.appendChild(successPopupTemplate);
   document.addEventListener('keydown', onSuccessMessageEscKeydown);
 }
 
 const removeSuccessMessage = () => {
-  succesPopupTemplate.remove();
+  successPopupTemplate.remove();
   document.removeEventListener('keydown', onSuccessMessageEscKeydown);
 }
 
@@ -53,7 +53,7 @@ errorPopupTemplate.addEventListener('click', () => {
   removeErrorMessage();
 });
 
-succesPopupTemplate.addEventListener('click', () => {
+successPopupTemplate.addEventListener('click', () => {
   removeSuccessMessage();
 });
 

@@ -5,6 +5,10 @@ const typeInput = mapFiltersForm.querySelector('[name="housing-type"]');
 const priceInput = mapFiltersForm.querySelector('[name="housing-price"]');
 const roomsInput = mapFiltersForm.querySelector('[name="housing-rooms"]');
 const guestsInput = mapFiltersForm.querySelector('[name="housing-guests"]');
+const PRICE_LOW = 'low';
+const PRICE_MIDDLE = 'middle';
+const PRICE_HIGH = 'high';
+const DEFAULT_FILTER_VALUE = 'any';
 
 const resetMapForm = () => {
   mapFiltersForm.reset();
@@ -13,24 +17,16 @@ const resetMapForm = () => {
 disableForm(mapFiltersForm, 'map__filters');
 
 const comparePrice = (offerPrice, mapPrice) => {
-  if ((mapPrice === 'any') ||
-    (offerPrice < 10000 && mapPrice === 'low') ||
-    ((offerPrice >= 10000 && offerPrice < 50000) && mapPrice === 'middle') ||
-    (offerPrice >= 50000 && mapPrice === 'high')) {
-    return true;
-  }
-
-  return false;
+  return ((mapPrice === DEFAULT_FILTER_VALUE) ||
+    (offerPrice < 10000 && mapPrice === PRICE_LOW) ||
+    ((offerPrice >= 10000 && offerPrice < 50000) && mapPrice === PRICE_MIDDLE) ||
+    (offerPrice >= 50000 && mapPrice === PRICE_HIGH));
 };
 
 const compareGuests = (offerGuests, mapGuests) => {
-  if ((mapGuests === 'any') ||
+  return ((mapGuests === DEFAULT_FILTER_VALUE) ||
     (offerGuests === +mapGuests) ||
-    (offerGuests === 0 && mapGuests === '0')) {
-    return true;
-  }
-
-  return false;
+    (offerGuests === 0 && mapGuests === '0'));
 };
 
 const getOfferRank = ({offer}) => {
@@ -39,13 +35,13 @@ const getOfferRank = ({offer}) => {
 
   let rank = 0;
 
-  if (offer.type === typeInput.value || typeInput.value === 'any') {
+  if (offer.type === typeInput.value || typeInput.value === DEFAULT_FILTER_VALUE) {
     rank += 1;
   }
   if (comparePrice(offer.price, priceInput.value)) {
     rank += 1;
   }
-  if (offer.rooms.toString() === roomsInput.value || roomsInput.value === 'any') {
+  if (offer.rooms.toString() === roomsInput.value || roomsInput.value === DEFAULT_FILTER_VALUE) {
     rank += 1;
   }
   if (compareGuests(offer.guests, guestsInput.value)) {
@@ -67,9 +63,9 @@ const filterOffers = ({offer}) => {
   const checkedFeatures = [...mapFiltersForm.querySelector('#housing-features')
     .querySelectorAll('input[type="checkbox"]:checked')];
 
-  return ((offer.type === typeInput.value || typeInput.value === 'any') &&
+  return ((offer.type === typeInput.value || typeInput.value === DEFAULT_FILTER_VALUE) &&
     (comparePrice(offer.price, priceInput.value)) &&
-    (offer.rooms.toString() === roomsInput.value || roomsInput.value === 'any') &&
+    (offer.rooms.toString() === roomsInput.value || roomsInput.value === DEFAULT_FILTER_VALUE) &&
     (compareGuests(offer.guests, guestsInput.value)) &&
     (checkedFeatures.every((feature) => offer.features.includes(feature.defaultValue))));
 };

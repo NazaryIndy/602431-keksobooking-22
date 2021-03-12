@@ -122,35 +122,19 @@ roomNumberInput.addEventListener('change', (evt) => {
 roomNumberInput.addEventListener('input', (evt) => {
   if (evt.target.value === '1') {
     for (let option of options) {
-      if (option.value !== '1') {
-        option.disabled = true;
-      } else {
-        option.disabled = false;
-      }
+      option.disabled = option.value !== '1';
     }
   } else if (evt.target.value === '2') {
     for (let option of options) {
-      if (option.value !== '1' && option.value !== '2') {
-        option.disabled = true;
-      } else {
-        option.disabled = false;
-      }
+      option.disabled = option.value !== '1' && option.value !== '2';
     }
   } else if (evt.target.value === '3') {
     for (let option of options) {
-      if (option.value !== '1' && option.value !== '2' && option.value !== '3') {
-        option.disabled = true;
-      } else {
-        option.disabled = false;
-      }
+      option.disabled = option.value !== '1' && option.value !== '2' && option.value !== '3';
     }
   } else if (evt.target.value === '100') {
     for (let option of options) {
-      if (option.value !== '0') {
-        option.disabled = true;
-      } else {
-        option.disabled = false;
-      }
+      option.disabled = option.value !== '0';
     }
   }
 });
