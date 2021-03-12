@@ -4,6 +4,7 @@ import { addOffersToMap, clearMarkers } from './map.js';
 import { showAlert, disableForm, enableForm, debounce } from './util.js';
 import { getData } from './api.js';
 import { resetForm } from './reset-form.js';
+import { addPhotosListener } from './ad-form-photo.js';
 
 const RERENDER_DELAY = 500;
 
@@ -27,3 +28,4 @@ getData(
 
 setAdFormSubmit(resetForm);
 setAdFormReset(resetForm);
+addPhotosListener();
