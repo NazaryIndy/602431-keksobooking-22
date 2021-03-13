@@ -55,7 +55,7 @@ L.tileLayer(
 ).addTo(map);
 
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
+  iconUrl: './img/main-pin.svg',
   iconSize: [MAIN_PIN_WIDTH , MAIN_PIN_HEIGHT],
   iconAnchor: [MAIN_PIN_WIDTH / 2, MAIN_PIN_HEIGHT],
 });
@@ -83,7 +83,7 @@ const addOffersToMap = (data) => {
   offers
     .forEach(({location}, index) => {
       const icon = L.icon({
-        iconUrl: '../img/pin.svg',
+        iconUrl: './img/pin.svg',
         iconSize: [PIN_WIDTH, PIN_HEIGHT],
         iconAnchor: [PIN_WIDTH / 2, PIN_HEIGHT],
       });

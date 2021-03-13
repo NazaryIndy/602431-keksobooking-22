@@ -48,6 +48,10 @@ const resetPhotos = () => {
 const resetAdForm = () => {
   resetPhotos();
   adForm.reset();
+
+  const typeOfHousingInput = adForm.querySelector('#type');
+  const priceInput = adForm.querySelector('#price');
+  priceInput.placeholder = priceInput.min = MinPrices[typeOfHousingInput.value.toUpperCase()];
 }
 
 disableForm(adForm, 'ad-form');
@@ -122,19 +126,19 @@ roomNumberInput.addEventListener('change', (evt) => {
 roomNumberInput.addEventListener('input', (evt) => {
   if (evt.target.value === '1') {
     for (let option of options) {
-      option.disabled = option.value !== '1';
+      option.disabled = (option.value !== '1');
     }
   } else if (evt.target.value === '2') {
     for (let option of options) {
-      option.disabled = option.value !== '1' && option.value !== '2';
+      option.disabled = (option.value !== '1' && option.value !== '2');
     }
   } else if (evt.target.value === '3') {
     for (let option of options) {
-      option.disabled = option.value !== '1' && option.value !== '2' && option.value !== '3';
+      option.disabled = (option.value !== '1' && option.value !== '2' && option.value !== '3');
     }
   } else if (evt.target.value === '100') {
     for (let option of options) {
-      option.disabled = option.value !== '0';
+      option.disabled = (option.value !== '0');
     }
   }
 });
@@ -150,7 +154,7 @@ const setAdFormSubmit = (onSuccess) => {
       new FormData(evt.target),
     )
   });
-}
+};
 
 const setAdFormReset = (resetForm) => {
   adForm.addEventListener('reset', resetForm);
