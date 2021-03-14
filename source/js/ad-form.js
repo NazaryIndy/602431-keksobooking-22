@@ -45,14 +45,17 @@ const resetPhotos = () => {
   avatarPreview.src = DEFAULT_AVATAR_URL;
 };
 
-const resetAdForm = () => {
-  resetPhotos();
-  adForm.reset();
-
+const resetPriceInput = () => {
   const typeOfHousingInput = adForm.querySelector('#type');
   const priceInput = adForm.querySelector('#price');
   priceInput.placeholder = priceInput.min = MinPrices[typeOfHousingInput.value.toUpperCase()];
-}
+};
+
+const resetAdForm = () => {
+  resetPhotos();
+  adForm.reset();
+  resetPriceInput();
+};
 
 disableForm(adForm, 'ad-form');
 
